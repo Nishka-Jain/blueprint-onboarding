@@ -11,13 +11,13 @@ export default function App() {
         <ScrollView>
           <View style={styles.postHeader}>
             <ProfilePlaceholder width={40} height={40} />
-            <View style={styles.headerTextContainer}>
+            <Text style={styles.headerTextContainer}>
               <Text style={styles.usernameText}>
                 <Text style={{ fontWeight: 'bold' }}>neha32</Text> at{' '}
                 <Text style={{ fontWeight: 'bold' }}>Mission Bit</Text>
               </Text>{' '}
               <Text style={styles.locationText}>San Francisco, CA</Text>
-            </View>
+            </Text>
           </View>
 
           <Image

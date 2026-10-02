@@ -1,5 +1,4 @@
 import js from '@eslint/js';
-import tsParser from '@typescript-eslint/parser';
 import eslintPluginPrettier from 'eslint-plugin-prettier';
 import tsEslint from 'typescript-eslint';
 
@@ -7,12 +6,12 @@ export default [
   js.configs.recommended,
   ...tsEslint.configs.recommended,
   {
-    files: ['src/**/*.ts'],
+    files: ['src/**/*.{ts,tsx}'],
     plugins: {
       prettier: eslintPluginPrettier,
     },
     languageOptions: {
-      parser: tsParser,
+      parser: tsEslint.parser,
     },
     rules: {
       'prettier/prettier': 'error',
