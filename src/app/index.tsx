@@ -1,45 +1,44 @@
+import React, { useEffect, useState } from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
-import CommentsIcon from '../../assets/comments-icon.svg';
-import HeartIcon from '../../assets/heart-icon.svg';
-import ShareIcon from '../../assets/messenger-icon.svg';
-import ProfilePlaceholder from '../../assets/profile-placeholder-icon.svg';
+import { fetchAllRows } from '../../api/supabase/queries/query';
+import Post, { PostProps } from '../components/Post';
 
 export default function App() {
+  const [postData, setPostData] = useState<PostProps[] | null>(null);
+
+  useEffect(() => {
+    async function loadData() {
+      try {
+        const fetchedPosts = await fetchAllRows();
+        setPostData(fetchedPosts);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    loadData();
+  }, []);
+
   return (
     <View style={styles.container}>
       <View style={styles.content}>
         <ScrollView>
-          <ProfilePlaceholder width={24} height={24} />
-          <Text>neha32 at Mission Bit</Text>
-          <Text>San Francisco, CA</Text>
-
-          <Text>
-            Image Link:
-            https://cdn.britannica.com/51/178051-050-3B786A55/San-Francisco.jpg
-          </Text>
-
-          <Text>
-            This past weekend, I taught at Mission Bit. I was working with a
-            group of high school students who were building their first web
-            pages. I really enjoyed being able to help guide 10 students on
-            learning CS fundamentals through a project! They were all really
-            eager to learn, and I'm glad I signed up. Highly recommend to any
-            other software engineers interested in volunteering! Sign-up here:
-            https://missionbit.org/get-involved/volunteer-with-us/
-          </Text>
-
-          <Text>3 Likes</Text>
-          <Text>View 2 Comments</Text>
-          <HeartIcon width={24} height={24} />
-          <CommentsIcon width={24} height={24} />
-          <ShareIcon width={24} height={24} />
-
-          <Text>February 1</Text>
-
-          <ProfilePlaceholder width={24} height={24} />
-          <Text>aiden_ugh at Boys and Girls Club</Text>
-          <Text>Oakland, CA</Text>
-          <Text>I recently volunteered at my local Boys and Girls Club!</Text>
+          {postData == null ? (
+            <Text style={{ textAlign: 'center', marginTop: 50 }}>
+              Loading posts...
+            </Text>
+          ) : (
+            postData.map((post, index) => (
+              <Post
+                key={index}
+                user_name={post.user_name}
+                npo_name={post.npo_name}
+                location_id={post.location_id}
+                post_text={post.post_text}
+                image_link={post.image_link}
+                num_likes={post.num_likes}
+              />
+            ))
+          )}
         </ScrollView>
       </View>
     </View>
